@@ -1,0 +1,163 @@
+#include <LiquidCrystal.h>
+void iot(int vltg, int curr, int temp,int gas);
+const int rs = 5, en = 4, d4 = 18, d5 = 19, d6 = 13, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+String ptt;
+String formattedDate;                                                         //Create variables to store the date and time
+String dayStamp;
+String timeStamp;
+int temp;
+int gas;
+int vltg;
+int curr;
+
+long l;
+long h=0;
+void setup() 
+{
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  Serial.begin(9600);
+  lcd.print("Init......");
+  delay(1000);
+    lcd.begin(16,2); // If you are using more I2C devices using the Wire library use lcd.begin(false)
+                 // this stop the library(LCD_I2C) from calling Wire.begin()
+  while (!Serial);
+delay(1000);
+  lcd.setCursor(0, 1);
+   pinMode(32,INPUT);
+   pinMode(33,INPUT);
+   pinMode(34,INPUT);
+   pinMode(35,INPUT);
+
+   pinMode(21,OUTPUT);
+   pinMode(23,OUTPUT);
+pinMode(16,INPUT_PULLUP);
+lcd.clear();
+  
+    pinMode(25,OUTPUT);
+    pinMode(26,OUTPUT);
+    pinMode(27,OUTPUT);
+    pinMode(14,OUTPUT);
+
+   pinMode(21,OUTPUT);
+   pinMode(22,OUTPUT);
+  
+  pinMode(17,OUTPUT);
+  pinMode(16,OUTPUT);
+
+}
+
+int fire,vib,oc,vibf;
+
+void print3(int v) {
+  if (v < 0) {
+    Serial.print("-");
+    v = abs(v);
+  }
+  if (v < 100) Serial.print("0");
+  if (v < 10)  Serial.print("0");
+  Serial.print(v);
+}
+
+int v1,v2,v3;
+int sc;
+
+
+void loop()
+{
+  temp=(analogRead(32)/4/17);
+  
+  v1=((analogRead(33)/14));
+  v2=((analogRead(34)/14));
+  v3=((analogRead(35)/14));
+  sc=((analogRead(15)/14));
+  
+  curr=40+rand()%10;
+
+  lcd.setCursor(0, 0);
+  lcd.print("V:");
+  lcd.print((float)v1/10);
+  lcd.print(" ");
+  lcd.print((float)v2/10);
+  lcd.print(" ");
+  lcd.print((float)v3/10);
+  lcd.print(" ");
+  
+ lcd.setCursor(0, 1);
+  lcd.print("C:");
+  lcd.print(curr);
+  lcd.print(" ");
+  lcd.print("Tm:");
+  lcd.print(temp);
+  lcd.print(" ");
+  lcd.print(sc);
+  lcd.print(" ");
+
+  if(temp>40)
+  {
+    digitalWrite(23,1);
+  }
+  else
+  {
+    digitalWrite(23,0);
+  }
+
+  Serial.print("A");
+  print3(temp*10);
+  Serial.print("B");
+  print3(v1);
+  Serial.print("C");
+  print3(v2);
+  Serial.print("D");
+  print3(v3);
+  Serial.print("E");
+  print3(curr);
+  Serial.println("F");
+
+
+  if(sc>10)
+  {
+    digitalWrite(25,1);
+    digitalWrite(26,0);
+    digitalWrite(27,1);
+    digitalWrite(14,0);
+    delay(200);
+    digitalWrite(25,0);
+    digitalWrite(26,1);
+    digitalWrite(27,0);
+    digitalWrite(14,1);
+    delay(200);         
+  }
+
+
+ while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read();
+    // add it to the inputString:
+  
+    if (inChar == 'X') {
+      digitalWrite(21,1);
+    }
+    if (inChar == 'x') {
+      digitalWrite(21,0);
+    }
+    if (inChar == 'Y') {
+      digitalWrite(22,1);
+    }
+    if (inChar == 'y') {
+      digitalWrite(22,0);
+    }
+    if (inChar == 'Z') {
+      digitalWrite(17,1);
+    }
+    if (inChar == 'z') {
+      digitalWrite(17,0);
+    }
+    
+  }
+  
+  delay(200);
+}
