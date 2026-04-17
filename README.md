@@ -39,7 +39,7 @@ Features:
 - User-friendly interface
 - Scalable system design
 
-Output / Results:
+Output / Results:    
 added the screenshot of the project output
 
 Future Scope:
