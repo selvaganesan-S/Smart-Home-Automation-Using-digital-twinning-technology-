@@ -40,7 +40,7 @@ Features:
 - Scalable system design
 
 Output / Results:
-
+added the screenshot of the project output
 
 Future Scope:
 - Integration with AI for smart decision making
